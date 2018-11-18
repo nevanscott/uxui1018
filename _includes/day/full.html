@@ -1,0 +1,24 @@
+{%- assign day = include.day -%}
+
+<section class="dash">
+  <div class="project">
+    {% include day/project.html day=day %}
+  </div>
+  <div class="agenda">
+    {% include day/short.html day=day %}
+  </div>
+  <div class="deadlines">
+    {% include day/deadlines.html day=day %}
+  </div>
+</section>
+
+<style>
+.dash {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1.5em;
+}
+.dash > div {
+  border: solid 1px;
+}
+</style>

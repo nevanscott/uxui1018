@@ -1,0 +1,89 @@
+{%- assign day = include.day -%}
+{%- assign date_xml = day | class_date: site.data.course.start_date | date_to_xmlschema -%}
+
+{%- assign lessons = site.lessons | where: "day" , day -%}
+{% if lessons.size > 0 -%}
+  <h4>Class</h4>
+  <ul>
+    {%- for post in lessons -%}
+      <li>
+        <a href="{{ post.url }}">
+          {{ post.title | markdownify | strip_html | strip }}
+        </a>
+      </li>
+    {%- endfor -%}
+  </ul>
+{%- endif %}
+
+{%- for post in site.projects -%}
+  {%- assign post_date_xml = post.assigned | class_date: site.data.course.start_date | date_to_string | date_to_xmlschema -%}
+  {%- if post_date_xml == date_xml -%}
+    <h4>Project</h4>
+    <div class="project">
+      <a href="{{ site.baseurl }}{{ post.url }}">
+        {{ post.title | markdownify | strip_html | strip }}
+      </a>
+    </div>
+  {%- endif -%}
+  {%- if post.due -%}
+    {%- assign due_date_xml = post.due | class_date: site.data.course.start_date | date_to_string | date_to_xmlschema -%}
+    {%- if post_date_xml < date_xml and date_xml < due_date_xml -%}
+      <h4>Project</h4>
+      <div class="project">
+        <a href="{{ site.baseurl }}{{ post.url }}">
+          {{ post.title | markdownify | strip_html | strip }}
+        </a>
+      </div>
+    {%- endif -%}
+    {%- if due_date_xml == date_xml -%}
+      <h4>Project Due</h4>
+      <div class="project project-due">
+        <a href="{{ site.baseurl }}{{ post.url }}">
+          {{ post.title | markdownify | strip_html | strip }}
+        </a>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- assign meetings = site.meetings | where: "day" , day -%}
+{% if meetings.size > 0 -%}
+  <h4>Meetings</h4>
+  <ul>
+    {%- for post in meetings -%}
+      <li>
+        <a href="{{ post.url }}">
+          {{ post.title | markdownify | strip_html | strip }}
+        </a>
+      </li>
+    {%- endfor -%}
+  </ul>
+{%- endif %}
+
+{%- assign homework_due = site.homework | where: "due" , day -%}
+{% if homework_due.size > 0 -%}
+  <h4>Homework Due</h4>
+  <ul>
+    {%- for post in homework_due -%}
+      <li>
+        <a href="{{ post.url }}">
+          {{ post.title | markdownify | strip_html | strip }}
+        </a>
+      </li>
+    {%- endfor -%}
+  </ul>
+{%- endif %}
+
+{%- assign homework_assigned = site.homework | where: "assigned" , day -%}
+{% if homework_assigned.size > 0 -%}
+  <h4>Homework</h4>
+  <ul>
+    {% for post in homework_assigned -%}
+      <li>
+        <a href="{{ post.url }}">
+          {{ post.title | markdownify | strip_html | strip }}
+        </a>
+      </li>
+    {%- endfor %}
+  </ul>
+{%- endif %}

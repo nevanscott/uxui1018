@@ -1,4 +1,4 @@
-<div class="calendar">
+<div class="agenda">
   {% for day in (1..site.data.course.days) -%}
     {%- assign date = day | class_date: site.data.course.start_date -%}
     <div class="day" data-date="{{ date | date_to_xmlschema }}">
@@ -7,7 +7,7 @@
         <span class="monthday">{{ date | date:'%e' }}</span>
         <span class="month">{{ date | date:'%b' }}</span>
       </div>
-      {% include day/short.html day=day %}
+      {% include day/full.html day=day %}
     </div>
   {%- endfor %}
 </div>

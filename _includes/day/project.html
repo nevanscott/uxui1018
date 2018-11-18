@@ -1,0 +1,35 @@
+{%- assign day = include.day -%}
+{%- assign date = day | class_date: site.data.course.start_date -%}
+{%- assign date_xml = day | class_date: site.data.course.start_date | date_to_xmlschema -%}
+<div class="project-block" data-date="{{ date | date_to_xmlschema }}">
+  {%- for post in site.projects -%}
+    {%- assign post_date_xml = post.assigned | class_date: site.data.course.start_date | date_to_string | date_to_xmlschema -%}
+    {%- if post_date_xml == date_xml -%}
+      <h4>Current Project</h4>
+      <div class="project">
+        <a href="{{ site.baseurl }}{{ post.url }}">
+          {{ post.title | markdownify | strip_html | strip }}
+        </a>
+      </div>
+    {%- endif -%}
+    {%- if post.due -%}
+      {%- assign due_date_xml = post.due | class_date: site.data.course.start_date | date_to_string | date_to_xmlschema -%}
+      {%- if post_date_xml < date_xml and date_xml < due_date_xml -%}
+        <h4>Current Project</h4>
+        <div class="project">
+          <a href="{{ site.baseurl }}{{ post.url }}">
+            {{ post.title | markdownify | strip_html | strip }}
+          </a>
+        </div>
+      {%- endif -%}
+      {%- if due_date_xml == date_xml -%}
+        <h4>Project Due</h4>
+        <div class="project project-due">
+          <a href="{{ site.baseurl }}{{ post.url }}">
+            {{ post.title | markdownify | strip_html | strip }}
+          </a>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+</div>
